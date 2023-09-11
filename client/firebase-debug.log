@@ -1,0 +1,21 @@
+[debug] [2023-09-11T21:48:17.969Z] ----------------------------------------------------------------------
+[debug] [2023-09-11T21:48:17.972Z] Command:       /Users/chloebella/.nvm/versions/node/v20.3.1/bin/node /usr/local/bin/firebase init
+[debug] [2023-09-11T21:48:17.973Z] CLI Version:   11.24.1
+[debug] [2023-09-11T21:48:17.973Z] Platform:      darwin
+[debug] [2023-09-11T21:48:17.973Z] Node Version:  v20.3.1
+[debug] [2023-09-11T21:48:17.973Z] Time:          Mon Sep 11 2023 17:48:17 GMT-0400 (Eastern Daylight Time)
+[debug] [2023-09-11T21:48:17.973Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2023-09-11T21:48:17.980Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2023-09-11T21:48:17.981Z] > authorizing via signed-in user (ccdoll94@gmail.com)
+[info] 
+     ######## #### ########  ######## ########     ###     ######  ########
+     ##        ##  ##     ## ##       ##     ##  ##   ##  ##       ##
+     ######    ##  ########  ######   ########  #########  ######  ######
+     ##        ##  ##    ##  ##       ##     ## ##     ##       ## ##
+     ##       #### ##     ## ######## ########  ##     ##  ######  ########
+
+You're about to initialize a Firebase project in this directory:
+
+  /Users/chloebella/Desktop/projects/MyBank/client
+
