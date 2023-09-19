@@ -3,13 +3,16 @@ import Image from 'next/image'
 import { 
   Box, 
   Flex, 
-  Text
+  Text,
+  Button
 } from '@chakra-ui/react'
 import { BulletItem ,COLOR, FONTS } from './components/styles'
 import { ButtonItem } from './components/buttons'
 import { ROUTES, getPageName } from '../app/utils/router-utils'
 
+
 export default function Home() {
+
   return (
 
     <Flex

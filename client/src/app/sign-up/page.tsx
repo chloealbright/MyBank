@@ -134,7 +134,7 @@ export default function SignUp(): JSX.Element{
                 <FormControl>
                   <FormLabel> Email </FormLabel>
                     <Input 
-                      placeholder='cannoli123o@gmail.com'
+                      placeholder='cannoli123@gmail.com'
                       {...getFieldProps('email')}
                       type='email'
                         id='email'

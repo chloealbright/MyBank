@@ -11,9 +11,11 @@ import {
   createUserWithEmailAndPassword,
   sendPasswordResetEmail  
 } from '@firebase/auth'
+
+
 import { doc, setDoc } from 'firebase/firestore'
 
-import { auth } from '../client/firebase/firebase'
+import { auth, } from '../client/firebase/firebase'
 const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore')
 export interface AuthContextProviderProps{
   children?: ReactNode
@@ -58,6 +60,8 @@ export const AuthContextProvider = (
     try{
       const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const { uid } = userCredential.user
+      console.log('UID FROM AUTH PROVIDER ', uid)
+      
       const db = getFirestore()
       // const userCollection = collection(db, 'users')
       const newUser = {
@@ -66,16 +70,16 @@ export const AuthContextProvider = (
         email: email,
         password: password
       }
-      const res = await db.collection('users').doc(uid).set(newUser)
+      const res = await db.collection("users").doc(uid).set(newUser)
 
 
-      const userDocRef = doc(db, "users", uid)
-      await setDoc(userDocRef, {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password
-      })
+      // const userDocRef = doc(db, "users", uid)
+      // await setDoc(userDocRef, {
+      //   firstName: firstName,
+      //   lastName: lastName,
+      //   email: email,
+      //   password: password
+      // })
 
       return userCredential
     } catch (error) {

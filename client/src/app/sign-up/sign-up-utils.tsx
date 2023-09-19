@@ -26,8 +26,8 @@ export const ValidatePassword = Yup.string()
     "Your password needs to have at least one lower case character"
   )
   .matches(/(?=.*[0-9])/, "Your password needs to have at least one number")
-  .min(8)
-  .max(200);
+  .min(5)
+  .max(40);
 
   interface InputAlertData {
     fieldName: string
