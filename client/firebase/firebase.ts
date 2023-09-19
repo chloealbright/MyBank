@@ -8,11 +8,11 @@ import 'firebase/compat/auth'
 import { initializeApp, getApps, getApp} from '@firebase/app'
 import { getAuth } from '@firebase/auth'
 
-
 // const { initializeApp, applicationDefault, cert } = require('firebase-admin/app')
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
+
   apiKey: `${process.env.NEXT_APP_API_KEY}`,
   authDomain: `${process.env.NEXT_APP_AUTH_DOMAIN}`,
   projectId: `${process.env.NEXT_APP_PROJECT_ID}`,
@@ -20,6 +20,7 @@ const firebaseConfig = {
   messagingSenderId: `${process.env.NEXT_APP_MESSAGESENDER_ID}`,
   appId: `${process.env.NEXT_APP_APP_ID}`,
   measurementId: `${process.env.NEXT_APP_MEASUREMENT_ID}`
+
 }
 
 // Initialize Firebase
