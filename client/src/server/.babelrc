@@ -1,0 +1,13 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": {
+          "node": "v20.3.1"
+          // "10.15.3"
+        }
+      }
+    ]
+  ]
+}

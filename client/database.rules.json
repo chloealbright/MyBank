@@ -1,0 +1,13 @@
+// Checks auth uid equals database node uid
+// In other words, the User can only access their own data
+
+{
+  "rules": {
+    "posts": {
+       "$uid": {
+         ".read": "$uid === auth.uid",
+         ".write": "$uid === auth.uid"
+       }
+     }
+   }
+}
