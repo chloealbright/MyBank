@@ -57,11 +57,10 @@ export const AuthContextProvider = (
   const [user, setUser] = useState<User | null>(null)
 
   async function signUp(firstName:string, lastName:string, email: string, password: string){
-    try{
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+    
+    const userCredential = await createUserWithEmailAndPassword(auth, email, password)
       const { uid } = userCredential.user
       console.log('UID FROM AUTH PROVIDER ', uid)
-      
       const db = getFirestore()
       // const userCollection = collection(db, 'users')
       const newUser = {
@@ -71,6 +70,11 @@ export const AuthContextProvider = (
         password: password
       }
       const res = await db.collection("users").doc(uid).set(newUser)
+      console.log('res FROM AUTH PROVIDER ', res)
+    try{
+      
+      console.log('hi from auth')
+      
 
 
       // const userDocRef = doc(db, "users", uid)

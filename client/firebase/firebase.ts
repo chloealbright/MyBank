@@ -25,14 +25,6 @@ const firebaseConfig = {
   appId: `${process.env.NEXT_APP_APP_ID}`,
   measurementId: `${process.env.NEXT_APP_MEASUREMENT_ID}`
 }
-
-const admin = require ('firebase-admin')
-  admin.initializeApp({
-    
-    projectId: `${process.env.FIRESTORE_PROJECT_ID}`,
-    clientEmail:`${process.env.FIRESTORE_PRIVATE_KEY}`,
-    privateKey: `${process.env.FIRESTORE_PRIVATE_EMAIL}`
-  })
    
 // Initialize Firebase
 // Instead of --> const app = initializeApp(firebaseConfig)
@@ -41,7 +33,9 @@ const admin = require ('firebase-admin')
 // if (!firebase.apps.length){
 //   firebase.initializeApp(firebaseConfig)
 // }
-export const app = !getApps.length ? initializeApp(firebaseConfig) : getApp()
+// export const app = !getApps.length ? initializeApp(firebaseConfig) : getApp()
+export const app = initializeApp(firebaseConfig) 
+
 export const auth = getAuth(app)
 export const db= getFirestore(app)
 // export const firebase = getFirestore()
