@@ -1,5 +1,15 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
+# Logs
+logs
+*.log
+npm-debug.log*
+npm-error.log*
+firebase-debug.log*
+
+# Firebase cache
+.firebase/
+
 # dependencies
 /node_modules
 /.pnp
@@ -33,3 +43,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# firebase
+.service-account-key/
+serviceAccountKey.json
+service-account-key.json

@@ -19,7 +19,7 @@ import {
   InputAlert,
   SignUpTheme
 } from '../components/styles'
-import { UseAuth } from '../../../auth-context/auth-context'
+import { UseAuth } from '../../../auth-context-provider'
 import { ValidateName, ValidatePassword } from './sign-up-utils'
 import { ROUTES } from '../utils/router-utils'
 import { useRouter } from 'next/navigation'
