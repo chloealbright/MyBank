@@ -1,6 +1,6 @@
 // Import the functions you need from the SDKs you need
 // import firebase from 'firebase/compat/app'
-// Timestamp, FieldValue, Filter from "@firebase/firestore"
+
 import 'firebase/firestore'
 
 import { getFirestore } from "@firebase/firestore"
