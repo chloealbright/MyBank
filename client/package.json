@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:deploy": "env-cmd -f .env.local npm run build && firebase deploy -P mybank-de2fa"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -45,6 +46,7 @@
     "@typescript-eslint/eslint-plugin": "^6.7.0",
     "@typescript-eslint/parser": "^6.7.0",
     "babel-jest": "^29.6.4",
+    "env-cmd": "^10.1.0",
     "eslint-config-next": "^13.4.19",
     "eslint-plugin-next": "^0.0.0",
     "eslint-plugin-react": "^7.33.2",
