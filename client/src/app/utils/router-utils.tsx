@@ -5,7 +5,8 @@ export const ROUTE_NAMES = {
   LINKED_ACCOUNTS: 'linked-accounts',
   DASHBOARD: 'dashboard',
   CONTACT: 'contact',
-  PORTFOLIO: 'portfolio'
+  PORTFOLIO: 'portfolio',
+  SIGN_OUT: 'sign-out',
 }
 
 export function getPathName (path: string): string {
@@ -20,6 +21,8 @@ export const getPageName = (path: string): string => {
       return 'Sign Up'
     case ROUTE_NAMES.LOG_IN:
       return 'Log In'
+    case ROUTE_NAMES.SIGN_OUT:
+      return 'Sign Out'
     case ROUTE_NAMES.LINKED_ACCOUNTS:
       return 'Accounts'
     case ROUTE_NAMES.DASHBOARD:

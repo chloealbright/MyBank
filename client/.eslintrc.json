@@ -14,8 +14,14 @@
     "plugins": [
         "@typescript-eslint",
         "react",
+        "node",
         "next",
-        "eslint-plugin-next"
+        "react-dom",
+        "@types/react",
+        "@types/node",
+        "@types/react-dom",
+        "eslint-plugin-next",
+        "eslint-plugin-react"
     ],
     "rules": {
         "jsx-quotes": ["error", "prefer-single"],

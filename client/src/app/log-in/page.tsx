@@ -4,9 +4,13 @@ import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
 import {
   Card,
+  Text,
   CardHeader,
   CardBody,
+  Stack,
   Alert,
+  AlertIcon,
+  AlertDescription,
   Flex,
   Input,
   FormControl,
@@ -16,6 +20,7 @@ import {
 } from '@chakra-ui/react'
 import { 
   COLOR,
+  FONTS,
   InputAlert,
   LogInTheme
 } from '../components/styles'
@@ -24,6 +29,8 @@ import { ValidateName, ValidatePassword } from '../sign-up/sign-up-utils'
 import { ROUTES } from '../utils/router-utils'
 import { useRouter } from 'next/navigation'
 import { signInWithEmailAndPassword, getAuth } from "firebase/auth"
+import Link from 'next/link'
+
 interface LogInValues {
   email: string
   password: string
@@ -31,11 +38,11 @@ interface LogInValues {
 
 const LogInSchema = Yup.object().shape({
   email: Yup.string().email('Invalid email').required('Required'),
-  password: Yup.string().required('Required').min(8).max(200),
+  password: ValidatePassword,
 })
 
 export default function LogIn(): ReactElement<string, string>{
-  const { signIn } = UseAuth()
+  const { isAuthenticated, signIn } = UseAuth()
   const [formError, setFormError] = useState<string>('')
   const [isSubmitting, setFormSubmit] = useState<boolean>(false)
   const router = useRouter()
@@ -55,85 +62,138 @@ export default function LogIn(): ReactElement<string, string>{
         borderBottomLeftRadius={50}
         justifyContent='center'
       >
-        <Card>
-          <CardHeader> 
-            Log In
-          </CardHeader>
-          
-          <Formik
-            initialValues={{
-              email: '',
-              password: '',
-            }}
-            
-            
-            onSubmit={ async (values: LogInValues) => {
-              setFormSubmit(true)
-              // same shape as initial values
-              console.log('logIn FORM SUBMITTED VALUES: '+ values)
-              if( signIn ){
-                try{
-                  await signIn(values.email, values.password)
-                  try{
-                    router.push(ROUTES.DASHBOARD)
-                  } catch (error) {
-                    console.log(`🚀 logIn error `, error)
-                  }
-                } catch (error) {
-                  console.log('logIn Page ON SUBMIT ERROR: '+ error)
-                  setFormError(formError)
-                  setFormSubmit(false)
-                }
-
-              }
-              
-            }}
-            validationSchema={LogInSchema}
-          >
-          {({ getFieldProps, touched, errors }) => (
-            <Form>
-              <CardBody>
-          
-                <FormControl>
-                  <FormLabel> Email </FormLabel>
-                    <Input 
-                      placeholder='cannoli123o@gmail.com'
-                      {...getFieldProps('email')}
-                      type='email'
-                        id='email'
-                        variant='baseStyle'
-                    />
-                    {touched.email && errors.email && (
-                      <InputAlert>{errors.email}</InputAlert>)}
-                </FormControl>
-                <FormControl>
-                <FormLabel> Password </FormLabel>
-                    <Input 
-                      placeholder='password'
-                      {...getFieldProps('password')}
-                      type='password'
-                        id='password'
-                        variant='baseStyle'
-                    />
-                    {touched.password && errors.password && (
-                      <InputAlert>{errors.password}</InputAlert>)}
-                </FormControl>
-        
-              </CardBody>
-              <Button 
-                type='submit' 
-                isLoading={isSubmitting}
-               
+        {isAuthenticated &&
+          <Card>
+            <CardHeader> 
+              Already Signed In 
+            </CardHeader>
+            <Link href={ROUTES.DASHBOARD} onClick={() => router.push(ROUTES.DASHBOARD)}>        
+              <Text 
+                fontFamily={FONTS.DEFAULT}
+                textColor={COLOR.LIGHT_BLUE}
+                fontSize={16}
+                fontWeight='bold'
+                py={5}
+                display='flex'
+                justifyContent='center'
               >
-                Log In
-              </Button>
-              {formError && <InputAlert>{formError}</InputAlert>}
+                Goto Dashboard 🚀
+              </Text>
+            </Link>
 
-            </Form>
-          )}
+          </Card>
+        }
 
-        </Formik>
-      </Card>
+        {!isAuthenticated &&
+          <Card>
+            <CardHeader> 
+              Log In
+            </CardHeader>
+            <Formik
+              initialValues={{
+                email: '',
+                password: '',
+              }}
+
+              onSubmit={ async (values: LogInValues) => {
+                setFormSubmit(true)
+                console.log('logIn FORM SUBMITTED VALUES: '+ values)
+                if( signIn ){
+                  try{
+                    await signIn(values.email, values.password)
+                    try{
+                      router.push(ROUTES.DASHBOARD)
+                    } catch (error) {
+                      console.log(`🚀 logIn error `, error)
+                      if (error instanceof Error) { // for type assertion, can't pass any to string
+                        setFormError(error.message);
+                      }
+                      setFormSubmit(false)
+                    }
+                  } catch (error) {
+                    console.log('logIn Page ON SUBMIT ERROR: '+ error)
+                    if (error instanceof Error) { 
+                      setFormError(error.message);
+                    }
+                    setFormSubmit(false)
+                  }
+
+                }
+                
+              }}
+              validationSchema={LogInSchema}
+              >
+              {({ getFieldProps, touched, errors }) => (
+                <Form>
+                  <CardBody>
+              
+                    <FormControl>
+                      <FormLabel> Email </FormLabel>
+                        <Input 
+                          placeholder='cannoli123o@gmail.com'
+                          {...getFieldProps('email')}
+                          type='email'
+                            id='email'
+                            variant='baseStyle'
+                        />
+                        {touched.email && errors.email && (
+                          <InputAlert>{errors.email}</InputAlert>)}
+                    </FormControl>
+                    <FormControl>
+                    <FormLabel> Password </FormLabel>
+                        <Input 
+                          placeholder='password'
+                          {...getFieldProps('password')}
+                          type='password'
+                            id='password'
+                            variant='baseStyle'
+                        />
+                        {touched.password && errors.password && (
+                          <InputAlert>{errors.password}</InputAlert>)}
+                    </FormControl>
+            
+                  </CardBody>
+                  <Button 
+                    type='submit' 
+                    isLoading={isSubmitting}
+                  
+                  >
+                    Log In
+                  </Button>
+                  
+                  {formError && 
+                    <Flex
+                      justifyContent={'center'}
+                      maxWidth={'85%'}
+                      my={3}
+                      mx={20}
+                    >
+                      <Alert 
+                        status='error'
+                        backgroundColor={'inherit'}
+                        ringColor={'red.600'}
+                        py={0}
+                        px={5}
+                        
+                      >
+                        <AlertIcon/>
+                          <AlertDescription
+                            textColor={'red.600'}
+                            textOverflow={'wrap'}
+                          >
+                            {formError}
+                          </AlertDescription>
+                      </Alert>
+
+                    </Flex>
+                  }
+
+                </Form>
+              )}
+            </Formik>
+          </Card>
+        }
+        
         
       </Flex>
     </Flex>

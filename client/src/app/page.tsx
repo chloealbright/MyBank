@@ -12,7 +12,6 @@ import { ROUTES, getPageName } from '../app/utils/router-utils'
 
 
 export default function Home() {
-
   return (
 
     <Flex
@@ -103,18 +102,16 @@ export default function Home() {
                 bgColor={COLOR.BLACK}
                 textColor={COLOR.WHITE}
               />
-
-
             </Box>
-
 
           </Box>
 
-
         </Flex>
-        
+
       </Flex>
+
     </Flex>
-    
+
   )
+  
 }

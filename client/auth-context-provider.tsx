@@ -1,42 +1,36 @@
 import React, { ReactNode, createContext, useContext,  useState, useEffect } from 'react'
 import { 
   Auth,
-  signInWithPopup, 
   signOut, 
   onAuthStateChanged,
-  GoogleAuthProvider,
   signInWithEmailAndPassword,
   User,
   UserCredential,
   createUserWithEmailAndPassword,
-  sendPasswordResetEmail  
+  sendPasswordResetEmail,
+  signInWithPopup, 
+  GoogleAuthProvider,  
 } from '@firebase/auth'
+import { doc, addDoc, getDoc, setDoc } from 'firebase/firestore'
+import  { db, auth } from '../client/firebase/firebase'
+import { getFirestore } from "@firebase/firestore"
 
-
-import { doc, setDoc } from 'firebase/firestore'
-
-import { auth, } from '../client/firebase/firebase'
-const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore')
+// const { getFirestore, Timestamp, FieldValue, Filter } = require('firebase-admin/firestore')
 export interface AuthContextProviderProps{
   children?: ReactNode
 }
 
 interface AuthContextModel{
-  auth: Auth
-  user: User | null
+  userAuth: Auth
+  currentUser: User | null,
+  isAuthenticated: boolean,
   signUp: (firstName:string, lastName:string, email:string, password:string) => Promise<UserCredential>
   // googleSignIn?:(email:string, password:string) => Promise<UserCredential>
-  signIn?: (email:string, password:string) => Promise<UserCredential>
-  signOut?: (auth:Auth) => Promise<void>
+  signIn: (email:string, password:string) => Promise<UserCredential>
+  logOut: (auth:Auth) => Promise<void>
   sendPasswordResetEmail?: (email: string) => Promise<void>
 }
 
-
-export interface UserContextState{
-  isAuthenticated: boolean
-  isLoading: boolean
-  id?: string
-}
 
 export const AuthContext = createContext<AuthContextModel>(
   {} as AuthContextModel
@@ -46,49 +40,26 @@ export function UseAuth(): AuthContextModel{
   return useContext(AuthContext)
 }
 
-export const UserState = createContext<UserContextState>(
-  {} as UserContextState
-)
-
-
 export const AuthContextProvider = (
-  {children}: AuthContextProviderProps
+  {children}: AuthContextProviderProps,
 ): JSX.Element =>{
-  const [user, setUser] = useState<User | null>(null)
+  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const [isLoading, setLoading] = useState<boolean>(true)
+  const userAuth = auth
+  const [isAuthenticated, setAuthenticated] = useState<boolean>(false)
 
   async function signUp(firstName:string, lastName:string, email: string, password: string){
+ 
     try{
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password)
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password) //(auth, email, password)
       const { uid } = userCredential.user
       console.log('UID FROM AUTH PROVIDER ', uid)
-      
-      const db = getFirestore()
-      // const userCollection = collection(db, 'users')
-      const newUser = {
-        firstName: firstName,
-        lastName: lastName,
-        email: email,
-        password: password
-      }
-      const res = await db.collection("users").doc(uid).set(newUser)
-      console.log('res FROM AUTH PROVIDER ', res)
-
-
-      // const userDocRef = doc(db, "users", uid)
-      // await setDoc(userDocRef, {
-      //   firstName: firstName,
-      //   lastName: lastName,
-      //   email: email,
-      //   password: password
-      // })
-
       return userCredential
-    } catch (error) {
+
+    }catch(error){
       console.error('ERROR CREATING USER: ', error)
       throw error
     }
-
-    // return createUserWithEmailAndPassword(auth, email, password)
   }
   // const googleSignIn=() =>{
   //   const provider = new GoogleAuthProvider()
@@ -96,10 +67,18 @@ export const AuthContextProvider = (
   // }
 
   async function signIn(email: string, password: string){
-    return signInWithEmailAndPassword(auth, email, password)
+
+    try{
+      const userCredential = await signInWithEmailAndPassword(auth, email, password)
+      // setCurrentUser(userCredential.user)
+      // setAuthenticated(true)
+      console.log('CURRENT USER FROM SIGN-IN ', userCredential.user)
+      return userCredential
+    }catch(error){
+      console.error('ERROR SIGNING IN USER: ', error)
+      throw error
+    }
   }
-
-
 
 
   // const googleSignIn = async (): Promise<UserCredential> => {
@@ -116,33 +95,41 @@ export const AuthContextProvider = (
     return sendPasswordResetEmail(auth, email)
   }
 
-  const logout = () =>{
-    signOut(auth)
+  function logOut (auth: Auth) {
+    return signOut(auth)
   }
-  // Firebase auth state listener
+
+
   useEffect(()=>{
     const unsubscribe = onAuthStateChanged(auth, (currentUser) =>{
-      setUser(currentUser)
+      setCurrentUser(currentUser)
+      setLoading(false)
+      if ( currentUser == null ){
+          console.log('CURRENT USER IS SIGNED OUT: ', currentUser)
+          setAuthenticated(false)
+      }else{
+        setAuthenticated(true)
+        console.log('CURRENT USER IS LOGGED IN: ', currentUser)
+      }
+
     })
 
     return () => unsubscribe() // on unmount, clean listener
-  },[user])
+  },[])
   
   const values ={
-    auth,
-    user,
+    userAuth,
+    currentUser,
+    isAuthenticated,
     signUp,
     signIn,
     // googleSignIn,
-    logout,
+    logOut,
     resetPassword
   }
 
-  return <AuthContext.Provider value={values}>{children}</AuthContext.Provider>
+  return <AuthContext.Provider value={values}>{!isLoading && children}</AuthContext.Provider>
   
 }
 
-export const useUserContext = (): UserContextState =>{
-  return useContext(UserState)
-}
 
