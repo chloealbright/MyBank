@@ -1,14 +1,14 @@
 'use client'
-import React, { useState, type ReactElement } from 'react'
+import React, { useState } from 'react'
 import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
 import {
   Card,
   CardHeader,
   CardBody,
-  Alert,
   Flex,
   Input,
+  Text,
   FormControl,
   Button,
   ChakraProvider,
@@ -16,6 +16,7 @@ import {
 } from '@chakra-ui/react'
 import { 
   COLOR,
+  FONTS,
   InputAlert,
   SignUpTheme
 } from '../components/styles'
@@ -23,9 +24,11 @@ import { UseAuth } from '../../../auth-context-provider'
 import { ValidateName, ValidatePassword } from './sign-up-utils'
 import { ROUTES } from '../utils/router-utils'
 import { useRouter } from 'next/navigation'
+import { addDoc, collection } from "@firebase/firestore"
+import { db } from '../../../firebase/firebase'
+import Link from 'next/link'
 
-
-interface SignUpValues {
+interface SignUpValues{
   firstName: string
   lastName: string
   email: string
@@ -48,11 +51,12 @@ const SignUpSchema = Yup.object().shape({
 
 // ReactElement<string, string>
 // JSX.Element
-export default function SignUp(): JSX.Element{
-  const { signUp } = UseAuth()
+export default function SignUp():  React.ReactElement{
+  const { isAuthenticated, signUp } = UseAuth()
   const [formError, setFormError] = useState<string>('')
   const [isSubmitting, setFormSubmit] = useState<boolean>(false)
   const router = useRouter()
+  const ref = collection(db, "users")
 
   return(
     <ChakraProvider theme={SignUpTheme}>
@@ -69,39 +73,73 @@ export default function SignUp(): JSX.Element{
         borderBottomLeftRadius={50}
         justifyContent='center'
       >
-        <Card>
+        {isAuthenticated &&
+          <Card>
+            <CardHeader> 
+              Already Signed In 
+            </CardHeader>
+            <Link href={ROUTES.DASHBOARD} onClick={() => router.push(ROUTES.DASHBOARD)}>        
+              <Text 
+                fontFamily={FONTS.DEFAULT}
+                textColor={COLOR.LIGHT_BLUE}
+                fontSize={16}
+                fontWeight='bold'
+                py={5}
+                display='flex'
+                justifyContent='center'
+              >
+                Goto Dashboard 🚀
+              </Text>
+            </Link>
+
+          </Card>
+        }
+        {!isAuthenticated && 
+          <Card>
           <CardHeader> 
             Create Your Account 
           </CardHeader>
           
           <Formik
             initialValues={{
-              firstName: '',
-              lastName: '',
-              email: '',
-              password: '',
-              repeatPassword: '',
+              firstName: "",
+              lastName: "",
+              email: "",
+              password: "",
+              repeatPassword: "",
             }}
             
             onSubmit={ async (values: SignUpValues) => {
-              setFormSubmit(true)
+              
               // same shape as initial values
-              console.log('SIGNUP FORM SUBMITTED VALUES: '+ values)
+              console.log('SIGNUP FORM SUBMITTED VALUES: ', 
+                values.firstName, 
+                values.lastName, 
+                values.email, 
+                values.password
+              )
+              const data = {
+                firstName: values.firstName,
+                lastName: values.lastName,
+                email: values.email,
+                password: values.password,
+              }
 
               try{
+                addDoc(ref, data)
+                setFormError('')
+                setFormSubmit(true)
+                
                 await signUp(values.firstName, values.lastName, values.email, values.password)
-                try{
-                  router.push(ROUTES.LOG_IN)
-                } catch (error) {
-                  console.log(`🚀 Signup error `, error)
-                  setFormError(formError)
-                  setFormSubmit(false)
-                }
+                alert("successfully registered!")
+                router.push(ROUTES.LOG_IN)
+                
               } catch (error) {
-                console.log('SignUp Page ON SUBMIT ERROR: '+ error)
+                console.log(`🚀 Signup error `, error)
                 setFormError(formError)
                 setFormSubmit(false)
               }
+              setFormSubmit(false)
             }}
             validationSchema={SignUpSchema}
           >
@@ -113,7 +151,6 @@ export default function SignUp(): JSX.Element{
                     <Input 
                       placeholder='Tony'
                       {...getFieldProps('firstName')}
-                      id='firstName'
                       variant='baseStyle'
                     />
                   {touched.firstName && errors.firstName && (
@@ -137,7 +174,6 @@ export default function SignUp(): JSX.Element{
                       placeholder='cannoli123@gmail.com'
                       {...getFieldProps('email')}
                       type='email'
-                        id='email'
                         variant='baseStyle'
                     />
                     {touched.email && errors.email && (
@@ -149,7 +185,6 @@ export default function SignUp(): JSX.Element{
                       placeholder='password'
                       {...getFieldProps('password')}
                       type='password'
-                        id='password'
                         variant='baseStyle'
                     />
                     {touched.password && errors.password && (
@@ -161,7 +196,6 @@ export default function SignUp(): JSX.Element{
                       placeholder='repeat password'
                       {...getFieldProps('repeatPassword')}
                       type='password'
-                        id='repeatPassword'
                         variant='baseStyle'
                     />
                     {touched.repeatPassword && errors.repeatPassword && (
@@ -171,7 +205,7 @@ export default function SignUp(): JSX.Element{
               <Button 
                 type='submit' 
                 isLoading={isSubmitting}
-               
+              
               >
                 Sign Up
               </Button>
@@ -180,9 +214,9 @@ export default function SignUp(): JSX.Element{
             </Form>
           )}
 
-        </Formik>
+        </Formik>  
       </Card>
-        
+      }    
       </Flex>
     </Flex>
 

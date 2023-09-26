@@ -1,18 +1,11 @@
 {
   "hosting": {
-    "source": ".",
+    "public": "build",
     "ignore": [
       "firebase.json",
       "**/.*",
-      "**/node_modules/**",
-      ".git",
-      ".runtimeconfig.json",
-      "firebase-debug.log",
-      "firebase-debug.*.log"
-    ],
-    "frameworksBackend": {
-      "region": "us-central1"
-    }
+      "**/node_modules/**"
+    ]
   },
   "functions": {
     "source": ".",
@@ -25,15 +18,16 @@
     ]
   },
   "emulators": {
-    "functions": {
-      "port": 5001
-    },
     "hosting": {
-      "port": 5000
-    },
-    "ui": {
-      "enabled": true
-    },
-    "singleProjectMode": true
+      "port": 5004,
+      "host": "0.0.0.0"
+    }
+  },
+  "database": {
+    "rules": "firestore.rules"
+  },
+  "firestore": {
+    "rules": "firestore.rules",
+    "indexes": "firestore.indexes.json"
   }
 }
