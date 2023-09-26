@@ -1,4 +1,10 @@
 {
+  "emulators": {
+    "hosting": {
+      "port": 5004,
+      "host": "0.0.0.0"
+    }
+  },
   "hosting": {
     "public": "build",
     "ignore": [
@@ -7,21 +13,19 @@
       "**/node_modules/**"
     ]
   },
-  "functions": {
-    "source": ".",
-    "ignore": [
-      ".firebase/**",
-      ".firebaserc",
-      "firebase.json",
-      "**/node_modules/**",
-      "**/public/**"
-    ]
-  },
-  "emulators": {
-    "hosting": {
-      "port": 5004,
-      "host": "0.0.0.0"
+  "headers": [
+    {
+      "source": "*/.@(ts|tsx|css|html|png|svg)",
+      "headers": [
+        {
+          "key": "Content-Encoding",
+          "value": "br"
+        }
+      ]
     }
+  ],
+  "database": {
+    "rules": "firestore.rules"
   },
   "firestore": {
     "rules": "firestore.rules",
