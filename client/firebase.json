@@ -15,7 +15,7 @@
   },
   "headers": [
     {
-      "source": "*/.@(ts|tsx|css|html|png|svg)",
+      "public": "*/.@(ts|tsx|css|html|png|svg)",
       "headers": [
         {
           "key": "Content-Encoding",

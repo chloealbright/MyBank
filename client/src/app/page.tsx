@@ -1,5 +1,4 @@
 'use client'
-import Image from 'next/image'
 import { 
   Box, 
   Flex, 
@@ -9,7 +8,7 @@ import {
 import { BulletItem ,COLOR, FONTS } from './components/styles'
 import { ButtonItem } from './components/buttons'
 import { ROUTES, getPageName } from '../app/utils/router-utils'
-
+import MyBankPreview from '../../public/MyBankPreview.png'
 
 export default function Home() {
   return (
@@ -32,11 +31,11 @@ export default function Home() {
           flexDirection='row'
         >
           <Box>
-            <Image
-              src="/MyBankPreview.png"
-              width={1080}
-              height={600}
-              alt="MyBank Preview"
+            <img 
+              src={MyBankPreview.src} 
+              width='1080px' 
+              height='600px' 
+              alt='[MyBank Preview]' 
             />
           </Box>
           <Box

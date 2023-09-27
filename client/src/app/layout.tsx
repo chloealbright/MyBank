@@ -39,8 +39,8 @@ export default function RootLayout({
         <ThemeProviders>
           <NavContainer/>
           <NextTopLoader color="#003ED6"
-            initialPosition={0.3}
-            crawlSpeed={200}
+            initialPosition={0.8}
+            crawlSpeed={300}
             height={3}
             showSpinner={false}
           />

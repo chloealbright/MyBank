@@ -14,10 +14,10 @@ import {
   CardHeader,
   CardBody
 } from '@chakra-ui/react'
-import Image from 'next/image'
 import { cardAnatomy } from '@chakra-ui/anatomy'
 import { Cardo } from 'next/font/google'
-
+import MyBankBulletLogo from '../../../public/MyBankBulletLogo.png'
+import MyBankPortfolioBulletLogo from '../../../public/MyBankPortfolioBulletLogo.png'
 // use Loader
 export function Loading() {
   return <Progress size='xs' isIndeterminate />
@@ -119,7 +119,7 @@ export function BulletItem(
   {
     text,
     fontSize
-  }: BulletItems
+  }: BulletItems,
 ): ReactElement{
   return(
     <Flex>
@@ -131,12 +131,12 @@ export function BulletItem(
         <ListItem
           py={2}
           width= '10%'
-        >
-          <Image
-            src="/MyBankBulletLogo.png"
-            width={14}
-            height={14}
-            alt="[Bullet Logo]"
+        > 
+          <img 
+            src={MyBankBulletLogo.src} 
+            width='14px' 
+            height='14px' 
+            alt='[Bullet Logo]'
           />
           
         </ListItem>
@@ -463,13 +463,12 @@ export function PortfolioBullet(
           py={2}
           width= {20}
         >
-          <Image
-            src="/MyBankPortfolioBulletLogo.png"
-            width={14}
-            height={14}
-            alt="[Bullet Logo]"
+          <img 
+            src={MyBankPortfolioBulletLogo.src} 
+            width='14px' 
+            height='14px' 
+            alt='[Bullet Logo]'
           />
-          
         </ListItem>
         <ListItem
             mx={4}

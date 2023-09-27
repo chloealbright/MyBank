@@ -11,10 +11,12 @@ import {
   Link,
   ChakraProvider
 } from '@chakra-ui/react'
-import Image from 'next/image'
 import { PortfolioTheme, PortfolioBullet ,COLOR, FONTS } from '../components/styles'
 import { ROUTES, getPageName } from '../utils/router-utils'
-
+import PortfolioIcon from '../../../public/PortfolioIcon.png'
+import MyBankPreview from '../../../public/MyBankPreview.png'
+import AnimalMafiaPreview from '../../../public/AnimalMafiaPreview.png'
+import LyriceePreview from '../../../public/LyriceePreview.png'
 
 export default function Portfolio(): ReactElement<string, string>{
   return(
@@ -36,11 +38,11 @@ export default function Portfolio(): ReactElement<string, string>{
               display='flex'
               justifyContent='center'
             >
-              <Image
-                src="/PortfolioIcon.png"
-                width={180}
-                height={180}
-                alt="Profile Picture"
+              <img 
+                src={PortfolioIcon.src} 
+                width='180px' 
+                height='180px' 
+                alt='[PortfolioIcon]' 
               />
             </Box>
             <CardHeader>
@@ -176,11 +178,11 @@ export default function Portfolio(): ReactElement<string, string>{
                 display='flex'
                 justifyContent='center'
               >
-              <Image
-                src="/MyBankPreview.png"
-                width={360}
-                height={360}
-                alt="[MyBankPreview]"
+              <img 
+                src={MyBankPreview.src} 
+                width='360px' 
+                height='360px' 
+                alt='[MyBank Preview]' 
               />
             </Box>
             </Box>
@@ -246,11 +248,11 @@ export default function Portfolio(): ReactElement<string, string>{
                 display='flex'
                 justifyContent='center'
               >
-              <Image
-                src="/AnimalMafiaPreview.png"
-                width={360}
-                height={360}
-                alt="[AnimalMafiaPreview]"
+              <img 
+                src={AnimalMafiaPreview.src} 
+                width='360px' 
+                height='360px' 
+                alt='[AnimalMafiaPreview]' 
               />
             </Box>      
             </Box>
@@ -319,11 +321,11 @@ export default function Portfolio(): ReactElement<string, string>{
                 display='flex'
                 justifyContent='center'
               >
-              <Image
-                src="/LyriceePreview.png"
-                width={360}
-                height={360}
-                alt="[LyriceePreview]"
+              <img 
+                src={LyriceePreview.src} 
+                width='360px' 
+                height='360px' 
+                alt='[LyriceePreview]' 
               />
             </Box>
             </Box>
