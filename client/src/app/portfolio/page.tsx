@@ -77,7 +77,7 @@ export default function Portfolio(): ReactElement<string, string>{
                 textColor={COLOR.WHITE}
                 width='100%'
               >
-                When I'm not coding or curating my life I'm usually playing tennis, learning how to surf, or checking off my extensive bucket-list.✈️🌎
+                When I'm not coding or curating my life I'm usually playing tennis, working on a new skill, or checking off my extensive bucket-list.✈️🌎
               </Text>
 
               <Text
@@ -87,11 +87,11 @@ export default function Portfolio(): ReactElement<string, string>{
                 textColor={COLOR.WHITE}
                 width='100%'
               >
-                Languages | Styling
+                Technology | Styling
               </Text>
           
               <PortfolioBullet
-                text="React js, Node js, Typescript, C++, C#, Python, HTML/CSS, SQL, GraphQL."
+                text="React js, Node js, Typescript / JavaScript, C++, C#, Python, HTML/CSS, PostgreSQL."
                 fontSize={15}
               />
 

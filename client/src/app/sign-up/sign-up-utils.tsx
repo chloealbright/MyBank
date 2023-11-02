@@ -5,8 +5,8 @@ export const ValidateName = Yup.string()
   .required("Required")
   .min(2, 'Name must be at least 2 characters')
   .matches(
-    /(^[\w'\-,.][^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$)/,
-    'Name cannot contain numbers'
+    /([^0-9_!¡?÷?¿/\\+=@#$%ˆ&*(){}|~<>;:[\]]{2,}$)/,
+    'Name cannot contain numbers or other characters'
   )
   .max(20, 'Name exceeds max length')
 
